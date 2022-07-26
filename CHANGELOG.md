@@ -29,3 +29,31 @@ create reJSON dataObject functions
 
 [Remove]
 
+# 0.0.2
+<p>
+create re_json re_hash dao_struct dao_conn with golang generics. 
+upgrade to implement go-redis v8
+</p>
+
+[Add]
+- ./dataObject
+  - re_json.go
+    - method JsonGet
+    - method JsonSet
+  - re_hash.go
+    - method HashGet
+    - method HashSet
+  - dao_struct.go
+    - RdbJson interface - JsonGet, JsonSet
+    - struct RedisConn
+- ./main.go
+  - func reJson - testing function
+  
+[Change]
+- ./dataObject
+  - dao_conn.go
+    - func conn - delete ping pong message check
+
+[Fix]
+
+[Remove]

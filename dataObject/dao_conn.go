@@ -4,15 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 )
-
-type DataBaseConfig struct {
-	Address  string `json:"db"`
-	Password string `json:"pw"`
-}
 
 func processKey(keyAddr string) (DataBaseConfig, error) {
 	var c DataBaseConfig
@@ -28,18 +24,16 @@ func processKey(keyAddr string) (DataBaseConfig, error) {
 
 func Conn(keyAddr string) (*redis.Client, error) {
 	loginInfo, err := processKey(keyAddr)
+	if err != nil {
+		log.Panicln(err)
+		return nil, err
+	}
 	fmt.Println("go redis tutorial")
 	client := redis.NewClient(&redis.Options{
 		Addr:     loginInfo.Address,
 		Password: loginInfo.Password,
 		DB:       0,
 	})
-
-	// pong to check if server is alive
-	pong, err := client.Ping().Result()
-	if err != nil {
-		return nil, err
-	}
-	fmt.Println(pong, "connection successful")
+	fmt.Println("connection successful")
 	return client, nil
 }

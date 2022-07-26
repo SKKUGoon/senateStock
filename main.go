@@ -1,8 +1,8 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"reflect"
 	"senateStock/dataObject"
 )
 
@@ -20,10 +20,20 @@ type Test struct {
 	StatusLog []string `json:"status_log"`
 }
 
-func main() {
+func reJson() {
+	// TODO: Create it as a test
 	var tgt []Test
 	conn, _ := dataObject.Conn("./token.json")
-	result, _ := dataObject.JSONGet[[]Test](conn, "school_json:4", "$", &tgt)
-	fmt.Println(result)
-	fmt.Println(reflect.TypeOf(result[0].Students))
+
+	var s = dataObject.RedisConn[[]Test]{
+		context.Background(),
+		conn,
+		&tgt,
+	}
+	_ = s.JsonGet("school_json:3", "$")
+	fmt.Println(s.Container)
+}
+
+func main() {
+	reJson()
 }
